@@ -1,0 +1,205 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ResearchCard from '../components/ResearchCard.astro';
+import CommunityCard from '../components/CommunityCard.astro';
+import { projects } from '../data/projects';
+---
+
+<Layout 
+  title="exploiTuga — Comunidade Portuguesa de Cybersecurity"
+  description="Comunidade portuguesa dedicada à cybersecurity, security research, ethical hacking, open source e partilha de conhecimento."
+>
+  <Header />
+  
+  <main>
+    <Hero />
+    
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Sobre nós</h2>
+        <p class="section-description">
+          O exploiTuga é uma comunidade portuguesa de cybersecurity, hacking ético e segurança informática.
+          Reunimos pessoas interessadas em ethical hacking, penetration testing, security research, OSINT,
+          threat intelligence, CTFs e desenvolvimento de ferramentas open source.
+        </p>
+      </div>
+    </section>
+    
+    {projects.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Projetos em Destaque</h2>
+            <a href="/projects" class="section-link">Ver todos →</a>
+          </div>
+          <div class="grid">
+            {projects.map((project) => (
+              <ProjectCard project={project} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Research</h2>
+          <a href="/research" class="section-link">Ver todos →</a>
+        </div>
+        <div class="grid">
+          <ResearchCard 
+            title="Security Research"
+            description="Investigação de vulnerabilidades e publicações de segurança"
+            category="Security Research"
+          />
+          <ResearchCard 
+            title="Threat Intelligence"
+            description="Análise de ameaças e inteligência de segurança"
+            category="Threat Intelligence"
+          />
+          <ResearchCard 
+            title="OSINT"
+            description="Investigação de código aberto e análise de dados"
+            category="OSINT"
+          />
+        </div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Comunidade</h2>
+          <a href="/community" class="section-link">Saiba mais →</a>
+        </div>
+        <div class="grid">
+          <CommunityCard 
+            icon="💬"
+            title="Discord"
+            description="Junta-te à nossa comunidade no Discord para discussões técnicas e colaboração"
+            link="PLACEHOLDER_DISCORD_URL"
+          />
+          <CommunityCard 
+            icon="🐙"
+            title="GitHub"
+            description="Contribui para os nossos projetos open source"
+            link="https://github.com/exploiTuga"
+          />
+          <CommunityCard 
+            icon="📚"
+            title="Partilha de Conhecimento"
+            description="Artigos, write-ups e recursos para aprender sobre cybersecurity"
+            link="/research"
+          />
+        </div>
+      </div>
+    </section>
+    
+    <section class="section section--cta">
+      <div class="container">
+        <div class="cta-content">
+          <h2 class="cta-title">Junta-te à Comunidade</h2>
+          <p class="cta-description">
+            Faz parte da comunidade portuguesa de cybersecurity mais inovadora.
+          </p>
+          <a 
+            href="PLACEHOLDER_DISCORD_URL" 
+            class="cta-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Junta-te ao Discord
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .section {
+    padding: var(--space-20) 0;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: var(--space-8);
+    color: var(--color-text);
+  }
+  
+  .section-description {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    max-width: 700px;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-8);
+  }
+  
+  .section-link {
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+  
+  .section-link:hover {
+    color: var(--color-primary-hover);
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+  }
+  
+  .section--cta {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .cta-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--space-12) 0;
+  }
+  
+  .cta-title {
+    font-size: 2rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-text);
+  }
+  
+  .cta-description {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: var(--space-4) var(--space-8);
+    background-color: var(--color-primary);
+    color: var(--color-background);
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+  }
+  
+  .cta-button:hover {
+    background-color: var(--color-primary-hover);
+  }
+</style>

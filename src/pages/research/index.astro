@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ResearchCard from '../../components/ResearchCard.astro';
+---
+
+<Layout 
+  title="Research — exploiTuga"
+  description="Security research, threat intelligence, vulnerability research, OSINT e write-ups da comunidade exploiTuga."
+>
+  <Header />
+  
+  <main class="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="page-title">Research</h1>
+        <p class="page-description">
+          Publicações de security research, threat intelligence, malware analysis, OSINT e write-ups técnicos.
+        </p>
+      </div>
+    </section>
+    
+    <section class="section">
+      <div class="container">
+        <div class="empty-state">
+          <p>Conteúdo em breve. A documentação futura estará disponível em docs.exploituga.pt</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .main {
+    min-height: calc(100vh - var(--header-height));
+    padding-top: var(--space-16);
+  }
+  
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-text);
+  }
+  
+  .page-description {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    max-width: 700px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: var(--space-20) 0;
+    color: var(--color-text-muted);
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+    margin-top: var(--space-12);
+  }
+</style>
