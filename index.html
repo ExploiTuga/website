@@ -1,13 +1,345 @@
-<html>
-  <head>
-    <title>exploiTuga</title>
-  </head>
-  <body>
-    <header>
-      <h1>exploiTuga</h1>
-    </header>
-    <main>
-      <p>Welcome to the exploiTuga website!</p>
-    </main>
-  </body>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ExploiTuga 💀 — Ethical Hacking & CTFs</title>
+<meta name="description" content="ExploiTuga — comunidade portuguesa focada em ethical hacking, CTFs colaborativos e partilha de conhecimento." />
+<style>
+  :root{
+    --bg:#0a0e0a;
+    --bg2:#0d120d;
+    --green:#2ecc40;
+    --green-dim:#1a7d29;
+    --red:#e0202a;
+    --red-dim:#8f1219;
+    --text:#c8f0c8;
+    --muted:#6f8a6f;
+    --mono:'Courier New',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--mono);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  #matrix{position:fixed;inset:0;z-index:0;opacity:.14;pointer-events:none}
+  .scanlines::before{
+    content:"";position:fixed;inset:0;z-index:2;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0,rgba(0,0,0,.15) 1px,transparent 2px,transparent 3px);
+    mix-blend-mode:multiply;
+  }
+  .wrap{position:relative;z-index:3;max-width:1080px;margin:0 auto;padding:0 24px}
+
+  nav{
+    position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;
+    background:rgba(10,14,10,.82);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(46,204,64,.22);
+  }
+  .nav-brand{display:flex;align-items:center;gap:10px;font-weight:bold;letter-spacing:1px}
+  .nav-brand svg{width:30px;height:30px}
+  .nav-brand .lock{color:var(--green)}
+  .nav-links{display:flex;gap:22px;font-size:14px}
+  .nav-links a{color:var(--muted);text-decoration:none;transition:.2s;text-transform:uppercase;letter-spacing:1px}
+  .nav-links a:hover{color:var(--green);text-shadow:0 0 8px var(--green)}
+  @media(max-width:640px){.nav-links{display:none}}
+
+  header{
+    min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:60px 24px;position:relative;z-index:3;
+  }
+  .logo-badge{
+    width:170px;height:170px;margin-bottom:26px;
+    filter:drop-shadow(0 0 22px rgba(46,204,64,.35)) drop-shadow(0 0 14px rgba(224,32,42,.28));
+    animation:float 5s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .term-tag{
+    font-size:13px;color:var(--green);border:1px solid var(--green-dim);
+    padding:4px 14px;border-radius:2px;letter-spacing:2px;margin-bottom:20px;
+    background:rgba(46,204,64,.06);text-transform:uppercase;
+  }
+  h1{
+    font-size:clamp(38px,8vw,84px);font-weight:900;letter-spacing:2px;line-height:1;
+    margin-bottom:18px;
+  }
+  h1 .ex{color:var(--red);text-shadow:0 0 18px rgba(224,32,42,.5)}
+  h1 .tuga{color:var(--green);text-shadow:0 0 18px rgba(46,204,64,.5)}
+  .glitch{position:relative;display:inline-block}
+  .glitch::before,.glitch::after{
+    content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden;
+  }
+  .glitch::before{color:var(--red);animation:g1 2.6s infinite linear alternate-reverse;clip-path:inset(0 0 55% 0)}
+  .glitch::after{color:var(--green);animation:g2 3.4s infinite linear alternate-reverse;clip-path:inset(45% 0 0 0)}
+  @keyframes g1{0%{transform:translate(0)}100%{transform:translate(-2px,-1px)}}
+  @keyframes g2{0%{transform:translate(0)}100%{transform:translate(2px,1px)}}
+  .sub{font-size:clamp(15px,2.4vw,20px);color:var(--text);max-width:640px;margin:0 auto 10px;min-height:56px}
+  .cursor{display:inline-block;width:10px;background:var(--green);animation:blink 1s steps(1) infinite;margin-left:2px}
+  @keyframes blink{50%{opacity:0}}
+  .tagline{color:var(--muted);font-size:15px;margin-bottom:34px}
+
+  .btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 30px;font-family:var(--mono);font-size:15px;font-weight:bold;
+    text-decoration:none;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+    border:1px solid var(--green);color:var(--bg);background:var(--green);
+    transition:.25s;position:relative;border-radius:3px;
+  }
+  .btn:hover{box-shadow:0 0 26px rgba(46,204,64,.6);transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--green)}
+  .btn.ghost:hover{background:rgba(46,204,64,.1)}
+
+  section{padding:80px 0;position:relative;z-index:3}
+  .sec-title{font-size:13px;color:var(--red);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+  .sec-title::before{content:"// "}
+  h2{font-size:clamp(26px,4vw,40px);color:var(--green);margin-bottom:22px;letter-spacing:1px}
+
+  .about-box{
+    border:1px solid rgba(46,204,64,.2);background:var(--bg2);
+    border-radius:6px;padding:26px 28px;font-size:16px;
+  }
+  .about-box .prompt{color:var(--green);}
+  .about-box p{margin-bottom:12px}
+  .about-box .comment{color:var(--muted)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .card{
+    border:1px solid rgba(46,204,64,.2);background:var(--bg2);
+    border-radius:6px;padding:26px;transition:.25s;position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;top:0;left:0;width:3px;height:100%;
+    background:linear-gradient(var(--green),var(--red));
+  }
+  .card:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  .card .ico{font-size:30px;margin-bottom:12px}
+  .card h3{color:var(--green);font-size:19px;margin-bottom:8px;letter-spacing:.5px}
+  .card p{color:var(--muted);font-size:14.5px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;text-align:center}
+  .stat{border:1px solid rgba(224,32,42,.18);border-radius:6px;padding:24px 14px;background:var(--bg2)}
+  .stat .num{font-size:34px;font-weight:900;color:var(--green);text-shadow:0 0 12px rgba(46,204,64,.4)}
+  .stat .lbl{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+
+  .terminal{
+    border:1px solid rgba(46,204,64,.3);border-radius:8px;overflow:hidden;background:#060906;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);
+  }
+  .term-bar{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#0d120d;border-bottom:1px solid rgba(46,204,64,.2)}
+  .dot{width:12px;height:12px;border-radius:50%}
+  .dot.r{background:#e0202a}.dot.y{background:#e0a020}.dot.g{background:#2ecc40}
+  .term-bar span{margin-left:8px;color:var(--muted);font-size:12px}
+  .term-body{padding:22px 24px;font-size:14.5px}
+  .term-body .line{margin-bottom:10px}
+  .term-body .usr{color:var(--red)}
+  .term-body .out{color:var(--text)}
+  .term-body .ok{color:var(--green)}
+
+  .cta{text-align:center;border:1px solid var(--green-dim);border-radius:10px;padding:56px 24px;background:radial-gradient(ellipse at center,rgba(46,204,64,.07),transparent 70%)}
+  .cta h2{margin-bottom:14px}
+  .cta p{color:var(--muted);margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto}
+
+  footer{text-align:center;padding:40px 24px;color:var(--muted);font-size:13px;border-top:1px solid rgba(46,204,64,.15);position:relative;z-index:3}
+  footer .heart{color:var(--red)}
+  footer svg{width:22px;height:22px;vertical-align:middle;margin-right:6px}
+
+  .fade{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .fade.in{opacity:1;transform:none}
+</style>
+</head>
+<body class="scanlines">
+<canvas id="matrix"></canvas>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="beetle" viewBox="0 0 100 100">
+    <path d="M38 24 C30 14 22 12 16 8" stroke="#e0202a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M62 24 C70 14 78 12 84 8" stroke="#2ecc40" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M32 44 L14 38 M32 56 L12 58 M34 68 L18 76" stroke="#e0202a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M68 44 L86 38 M68 56 L88 58 M66 68 L82 76" stroke="#2ecc40" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="50" cy="26" rx="13" ry="10" fill="#e0202a"/>
+    <ellipse cx="50" cy="26" rx="6.5" ry="10" fill="#2ecc40"/>
+    <path d="M50 30 C34 30 26 44 26 60 C26 78 38 90 50 90 Z" fill="#e0202a"/>
+    <path d="M50 30 C66 30 74 44 74 60 C74 78 62 90 50 90 Z" fill="#2ecc40"/>
+    <line x1="50" y1="30" x2="50" y2="90" stroke="#0a0e0a" stroke-width="2.5"/>
+    <line x1="30" y1="50" x2="46" y2="50" stroke="#0a0e0a" stroke-width="2"/>
+    <line x1="54" y1="50" x2="70" y2="50" stroke="#0a0e0a" stroke-width="2"/>
+  </symbol>
+</svg>
+
+<nav>
+  <div class="nav-brand"><span class="lock">🔐</span> ExploiTuga <span style="color:var(--red)">💀</span></div>
+  <div class="nav-links">
+    <a href="#sobre">Sobre</a>
+    <a href="#foco">Foco</a>
+    <a href="#stats">Comunidade</a>
+    <a href="#regras">Regras</a>
+    <a href="#join">Entrar</a>
+  </div>
+</nav>
+
+<header>
+  <svg class="logo-badge"><use href="#beetle"/></svg>
+  <div class="term-tag">root@exploituga:~#</div>
+  <h1>
+    <span class="ex glitch" data-text="Exploi">Exploi</span><span class="tuga glitch" data-text="Tuga">Tuga</span>
+  </h1>
+  <p class="sub"><span id="typed"></span><span class="cursor">&nbsp;</span></p>
+  <p class="tagline">🔐 Comunidade portuguesa de ethical hacking &amp; CTFs 💀</p>
+  <div class="btns">
+    <a href="#join" class="btn">⚡ Junta-te ao Discord</a>
+    <a href="#sobre" class="btn ghost">./explorar</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="sobre" class="fade">
+    <div class="sec-title">whoami</div>
+    <h2>Quem somos</h2>
+    <div class="about-box">
+      <p><span class="prompt">$</span> cat sobre.txt</p>
+      <p><span class="comment"># ---------------------------------------</span></p>
+      <p>Somos o <strong style="color:var(--green)">ExploiTuga</strong> — uma comunidade portuguesa focada em
+      <strong style="color:var(--red)">ethical hacking</strong>, CTFs colaborativos e partilha de conhecimento
+      entre entusiastas e profissionais.</p>
+      <p>Aqui, cada dia é uma oportunidade para aprender mais. Seja iniciante curioso ou veterano de segurança
+      ofensiva, há sempre um novo desafio, uma nova write-up e alguém pronto para partilhar.</p>
+      <p><span class="comment"># Aprender • Partilhar • Hackear (com ética) 💚❤️</span></p>
+    </div>
+  </section>
+
+  <section id="foco" class="fade">
+    <div class="sec-title">./modules</div>
+    <h2>O nosso foco</h2>
+    <div class="grid">
+      <div class="card"><div class="ico">🚩</div><h3>CTFs Colaborativos</h3><p>Resolvemos Capture The Flag em equipa — web, pwn, crypto, forensics, reversing. Ninguém fica para trás.</p></div>
+      <div class="card"><div class="ico">🛡️</div><h3>Ethical Hacking</h3><p>Segurança ofensiva com responsabilidade. Técnicas reais, mindset de atacante, sempre dentro da lei.</p></div>
+      <div class="card"><div class="ico">📚</div><h3>Partilha de Conhecimento</h3><p>Write-ups, tutoriais, ferramentas e recursos. O que aprendes, ensinas — o que ensinas, dominas.</p></div>
+      <div class="card"><div class="ico">🇵🇹</div><h3>Comunidade Tuga</h3><p>Em português, feito por portugueses. Entusiastas e profissionais lado a lado, sempre em cima do evento.</p></div>
+      <div class="card"><div class="ico">💬</div><h3>Discussão Ativa</h3><p>Dúvidas, CVEs, notícias de segurança e debates técnicos. A conversa nunca para.</p></div>
+      <div class="card"><div class="ico">🧠</div><h3>Crescimento Contínuo</h3><p>Cada dia uma oportunidade para aprender mais. Do zero ao root, um passo de cada vez.</p></div>
+    </div>
+  </section>
+
+  <section id="stats" class="fade">
+    <div class="sec-title">status</div>
+    <h2>A comunidade</h2>
+    <div class="stats">
+      <div class="stat"><div class="num" data-count="24">0</div><div class="lbl">Horas ativas /7</div></div>
+      <div class="stat"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Ético</div></div>
+      <div class="stat"><div class="num" data-count="0" data-suffix="∞" data-static="1">∞</div><div class="lbl">Desafios</div></div>
+      <div class="stat"><div class="num">🇵🇹</div><div class="lbl">Made in Portugal</div></div>
+    </div>
+  </section>
+
+  <section id="regras" class="fade">
+    <div class="sec-title">./rules --list</div>
+    <h2>Código de conduta</h2>
+    <div class="terminal">
+      <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>rules.sh — bash</span></div>
+      <div class="term-body">
+        <div class="line"><span class="usr">exploituga@server:~$</span> <span class="out">./rules.sh</span></div>
+        <div class="line"><span class="ok">[01]</span> <span class="out">Ética acima de tudo — só hacking autorizado e legal.</span></div>
+        <div class="line"><span class="ok">[02]</span> <span class="out">Respeito mútuo — sem toxicidade, sem discriminação.</span></div>
+        <div class="line"><span class="ok">[03]</span> <span class="out">Partilha — contribui, ajuda e faz write-ups.</span></div>
+        <div class="line"><span class="ok">[04]</span> <span class="out">Nada de black-hat — sem malware real, dumps ou alvos não autorizados.</span></div>
+        <div class="line"><span class="ok">[05]</span> <span class="out">Curiosidade &gt; ego — pergunta, erra, aprende.</span></div>
+        <div class="line"><span class="usr">exploituga@server:~$</span> <span class="ok">Regras carregadas ✓</span><span class="cursor">&nbsp;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join" class="fade">
+    <div class="cta">
+      <svg style="width:70px;height:70px;margin-bottom:6px"><use href="#beetle"/></svg>
+      <h2>Pronto para o próximo desafio?</h2>
+      <p>Entra no nosso servidor de Discord, apresenta-te e começa já a hackear (com ética 😉). A flag está à tua espera.</p>
+      <div class="btns" style="justify-content:center">
+        <a href="https://discord.gg/nUGA3cXxx5" id="discord-link" class="btn">⚡ Entrar no Discord</a>
+      </div>
+      <p style="margin-top:18px;font-size:12px;color:var(--muted)">// substitui o link acima pelo convite real do teu servidor</p>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <svg><use href="#beetle"/></svg><br/>
+  <strong style="color:var(--green)">Exploi</strong><strong style="color:var(--red)">Tuga</strong> 💀 — feito com <span class="heart">❤️</span> e <span style="color:var(--green)">💚</span> em Portugal<br/>
+  <span style="font-size:11px">// hack the planet, ethically • {2026}</span>
+</footer>
+
+<script>
+(function(){
+  const c=document.getElementById('matrix'),x=c.getContext('2d');
+  let w,h,cols,drops;
+  const chars="01</>{}[]#$%&*ETXPLOITUGA؟ﬁﬂ01".split("");
+  function resize(){
+    w=c.width=innerWidth;h=c.height=innerHeight;
+    cols=Math.floor(w/16);drops=Array(cols).fill(1);
+  }
+  resize();addEventListener('resize',resize);
+  function draw(){
+    x.fillStyle='rgba(10,14,10,.08)';x.fillRect(0,0,w,h);
+    x.font='15px monospace';
+    for(let i=0;i<cols;i++){
+      const t=chars[Math.floor(Math.random()*chars.length)];
+      x.fillStyle=Math.random()>.5?'#2ecc40':'#e0202a';
+      x.fillText(t,i*16,drops[i]*16);
+      if(drops[i]*16>h && Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw,55);
+})();
+
+(function(){
+  const el=document.getElementById('typed');
+  const phrases=[
+    "Cada dia é uma oportunidade para aprender mais.",
+    "CTFs colaborativos, do web ao pwn.",
+    "Ethical hacking, sempre com responsabilidade.",
+    "Partilha de conhecimento entre tugas.",
+  ];
+  let p=0,i=0,del=false;
+  function tick(){
+    const cur=phrases[p];
+    el.textContent=del?cur.slice(0,i--):cur.slice(0,i++);
+    let d=del?35:60;
+    if(!del&&i>cur.length){del=true;d=1800;}
+    else if(del&&i<0){del=false;p=(p+1)%phrases.length;i=0;d=350;}
+    setTimeout(tick,d);
+  }
+  tick();
+})();
+
+(function(){
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.15});
+  document.querySelectorAll('.fade').forEach(e=>io.observe(e));
+})();
+
+(function(){
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target;
+      if(el.dataset.static){io.unobserve(el);return;}
+      const end=+el.dataset.count,suf=el.dataset.suffix||'';let n=0;
+      const step=Math.max(1,Math.floor(end/40));
+      const t=setInterval(()=>{n+=step;if(n>=end){n=end;clearInterval(t);}el.textContent=n+suf;},30);
+      io.unobserve(el);
+    });
+  },{threshold:.5});
+  document.querySelectorAll('.num[data-count]').forEach(e=>io.observe(e));
+})();
+</script>
+</body>
 </html>
